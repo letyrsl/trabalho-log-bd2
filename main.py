@@ -2,6 +2,7 @@ import psycopg2
 
 from db_config import db_config
 from load_database import load_database
+from log_redo import log_redo
 
 def main():
   conn = None
@@ -13,6 +14,9 @@ def main():
 
 	  # carrega o banco com dados do arquivo
     load_database(cursor)
+
+    # recuperar log REDO
+    log_redo(cursor)
 
     # teste
     cursor.execute('SELECT * FROM data')
@@ -30,6 +34,5 @@ def main():
       conn.close()
 
 
-#### CALLING MAIN FUNCTION ####
-main()
-#### ##################### ####
+if __name__ == '__main__':
+  main()
