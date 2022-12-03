@@ -18,11 +18,6 @@ def main():
     # recuperar log REDO
     log_redo(cursor)
 
-    # teste
-    cursor.execute('SELECT * FROM data')
-    data = cursor.fetchall()
-    print(data)
-
 	  # fecha conexão com banco
     cursor.close()
 
