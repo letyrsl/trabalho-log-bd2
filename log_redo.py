@@ -1,13 +1,13 @@
 # Biblioteca do regEx 
 import re
 
-from print_out import print_transactions, print_json
+from print_out import print_transactions, print_json, print_update
 
 def find_checkpoint(file):
   # Encontrando o checkpoint e salvando as transações que ainda não terminaram
   matches = re.findall('<CKPT \((.+?)\)>', file.read())
-  # Considerando que vai pegar o último checkpoint do arquivo
-  return matches[-1].split(',')
+  # Retorna transações do último checkpoint, se não tiver retorna array vazio
+  return matches[-1].split(',') if matches else []
 
 def find_committed_transations(file):
   transactions = []
@@ -47,7 +47,7 @@ def restore_changes(file, cursor, committed_transactions):
       matches = re.search('<'+ transaction +',(.+?)>', line)
       # Se for log da transação, atualiza no banco
       if matches:
-        # Criando um array com os valores informados no arquivo de log
+        # Cria um array com os valores informados no arquivo de log
         values = matches.group(1).split(',')
 
         # Retorna a tupla com o ID informado no arquivo
@@ -56,8 +56,8 @@ def restore_changes(file, cursor, committed_transactions):
 
         # Confere se o valor que esta no arquivo é diferente do valor que está no BD
         if(int(values[3]) != tuple):
-          print('TRANSAÇÃO '+ transaction +': No registro '+ values[0] +', a coluna ' + values[1] +' estava ' + str(tuple) + ' e no log atualizou para ' + values[3])
           cursor.execute('UPDATE data SET ' + values[1] + ' = ' + values[3] + ' WHERE id = ' + values[0])
+          print_update(transaction, tuple, values)
 
 
 def log_redo(cursor):
