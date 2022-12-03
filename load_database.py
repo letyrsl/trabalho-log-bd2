@@ -1,6 +1,6 @@
 import json
 
-def create_table():
+def create_table(cursor):
   cursor.execute('DROP TABLE IF EXISTS data;')
 
   cursor.execute('''
@@ -13,7 +13,7 @@ def create_table():
 
 def load_database(cursor):
   # Cria tabela data
-  create_table
+  create_table (cursor)
 
   # Abre arquivo de metadados apenas para leitura
   file = open('test_files/metadado.json', 'r')
