@@ -1,27 +1,26 @@
 import psycopg2
-from config import config
 
-def connect():
+from db_config import db_config
+from load_database import load_database
+
+def main():
   conn = None
   try:
-    # pega configurações do banco
-    params = config()
-
-    # conecta com o banco
-    print('Conectando com o PostgreSQL...')
+    # conecta com banco de dados e cria cursor
+    params = db_config()
     conn = psycopg2.connect(**params)
+    cursor = conn.cursor()
 
-    # cria um cursor
-    cur = conn.cursor()
+	  # carrega o banco com dados do arquivo
+    load_database(cursor)
 
-	  # teste de execução de select
-    print('Versão do PostgreSQL:')
-    cur.execute('SELECT version()')
-    db_version = cur.fetchone()
-    print(db_version)
+    # teste
+    cursor.execute('SELECT * FROM data')
+    data = cursor.fetchall()
+    print(data)
 
-	  # fecha conexão
-    cur.close()
+	  # fecha conexão com banco
+    cursor.close()
 
   except (Exception, psycopg2.DatabaseError) as error:
     print(error)
@@ -29,8 +28,8 @@ def connect():
   finally:
     if conn is not None:
       conn.close()
-      print('Conexão com banco fechada.')
 
 
-if __name__ == '__main__':
-  connect()
+#### CALLING MAIN FUNCTION ####
+main()
+#### ##################### ####
