@@ -23,10 +23,14 @@ def load_database(cursor):
     data = json.load(file)['INITIAL']
     tuples = list( zip(data['id'], data['A'], data['B']) )
 
-    # Insere tuplas na tabela
+    # Percorre tuplas
     for tuple in tuples:
-      values = '('+ str(tuple[0]) +', '+ str(tuple[1]) +', '+ str(tuple[2]) +')'
-      insert_query = 'INSERT INTO data(id, a, b) VALUES ' + values
+      # Converte dados das tuplas para string
+      tuple = [str(column) for column in tuple]
+      # Cria string de valor das colunas separadas por vírgula
+      values = ', '.join(tuple)
+      # Insere tupla na tabela
+      insert_query = 'INSERT INTO data(id, a, b) VALUES (' + values + ')'
       cursor.execute(insert_query)
 
   finally:

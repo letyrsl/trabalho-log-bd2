@@ -70,3 +70,11 @@ Funções a serem implementadas:
 - Checar quais valores estão salvos nas tabelas (com o select) e atualizar valores inconsistentes (update);
 - Reportar quais dados foram atualizados;
 - Seguir o fluxo de execução conforme o método de REDO, conforme visto em aula;
+
+## Para rodar
+- É necessário ter instaladas as seguintes dependências:
+  - Python 3.x
+  - Postgres 14.x
+- É necessária a instalação do pacote psycopg2: **pip install psycopg2**
+- É necessária a criação da database db_log: **CREATE DATABASE db_log;**
+- Tendo seguido todos os passos anteriores, é possível rodar o projeto através do comando: **python main.py**

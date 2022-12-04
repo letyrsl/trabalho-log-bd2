@@ -1,7 +1,8 @@
-# Biblioteca do regEx 
+# Pacote do regex
 import re
 
-from print_out import print_transactions, print_json, print_update
+# Scripts para impressão
+from scripts.print_out import print_transactions, print_json, print_update
 
 def find_checkpoint(file):
   # Encontrando o checkpoint e salvando as transações que ainda não terminaram
@@ -37,7 +38,7 @@ def restore_changes(file, cursor, committed_transactions):
     # Vai para o início da transação
     content = file.read()
     start_transaction = content.index('<start '+ transaction +'>')
-    file.seek(start_transaction)      
+    file.seek(start_transaction)
 
     # Percorre arquivo do start da transição até o final
     for line in list(file):
@@ -50,7 +51,7 @@ def restore_changes(file, cursor, committed_transactions):
         # Cria um array com os valores informados no arquivo de log
         values = matches.group(1).split(',')
 
-        # Retorna a tupla com o ID informado no arquivo
+        # Retorna a coluna da tupla com o ID informado no arquivo
         cursor.execute('SELECT ' + values[1] + ' FROM data WHERE id = ' + values[0])
         tuple = cursor.fetchone()[0]
 
@@ -74,7 +75,7 @@ def log_redo(cursor):
     # Restaurar mudanças feitas nas transições committadas
     restore_changes(file, cursor, committed_transactions)
 
-    # Imprime 
+    # Imprime saída
     print_transactions(checkpoint_transactions, committed_transactions)
     print_json(cursor)
 

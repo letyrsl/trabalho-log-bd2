@@ -1,8 +1,10 @@
+# Pacote adaptador do banco de dados
 import psycopg2
 
-from db_config import db_config
-from load_database import load_database
-from log_redo import log_redo
+# Scrips desenvolvidos para o projeto
+from scripts.db_config import db_config
+from scripts.load_database import load_database
+from scripts.log_redo import log_redo
 
 def main():
   conn = None
