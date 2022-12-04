@@ -11,17 +11,24 @@ def print_update(transaction, old_value, log_values):
 def print_transactions(checkpoint_transactions, committed_transactions):
   new_line()
 
-  if committed_transactions:
-    # Imprime transações que realizaram ou não o Redo
-    for transaction in checkpoint_transactions:
-      if(transaction in committed_transactions):
-        print('TRANSAÇÃO '+ transaction +': realizou Redo')
-      else:
-        print('TRANSAÇÃO '+ transaction +': não realizou Redo')
-  else:
-    # Não tem transações commitadas
+  # Não tem transações commitadas
+  if not committed_transactions:
     print('Não houve nenhuma alteração no banco')
-  
+    return
+
+  # Imprime transactions que foram commitadas
+  if not checkpoint_transactions:
+    for transaction in committed_transactions:
+      print('TRANSAÇÃO '+ transaction +': realizou Redo')
+
+  # Imprime transações do checkpoint que realizaram ou não o Redo
+  for transaction in checkpoint_transactions:
+    if(transaction in committed_transactions):
+      print('TRANSAÇÃO '+ transaction +': realizou Redo')
+    else:
+      print('TRANSAÇÃO '+ transaction +': não realizou Redo')
+
+
 def print_json(cursor):
   id = []
   a = []
