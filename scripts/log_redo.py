@@ -55,8 +55,8 @@ def restore_changes(file, cursor, committed_transactions):
         cursor.execute('SELECT ' + values[1] + ' FROM data WHERE id = ' + values[0])
         tuple = cursor.fetchone()[0]
 
-        # Confere se o valor antigo que esta no arquivo é igual ao valor que está no BD
-        if(int(values[2]) == tuple):
+        # Confere se o valor que esta no arquivo é diferente do valor que está no BD
+        if(int(values[3]) != tuple):
           cursor.execute('UPDATE data SET ' + values[1] + ' = ' + values[3] + ' WHERE id = ' + values[0])
           print_update(transaction, tuple, values)
 
